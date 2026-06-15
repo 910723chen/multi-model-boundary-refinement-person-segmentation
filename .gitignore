@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Model weights and large binaries
+model_weights/*
+!model_weights/README.md
+*.pth
+*.pt
+*.onnx
+
+# Experiment outputs generated locally
+outputs/
+experiment_outputs/
+full_batch_outputs/
+runs/
+
+# Local cache and temporary files
+*.tmp
+*.temp
+*.log
+.DS_Store
+Thumbs.db
+
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+
+# PowerPoint temporary files
+~$*.pptx

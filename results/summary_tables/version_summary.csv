@@ -1,0 +1,9 @@
+﻿version,modules,runs,mean_edge_alignment,min_edge_alignment,max_edge_alignment,statuses
+v1_sam_auto_grabcut,SAM auto + Canny score + GrabCut,12,0.8708,0.6176,0.9695,ok:12
+v2_sam_auto_edge_grabcut,SAM auto + Canny score + Edge refine + GrabCut,12,0.8666,0.6714,0.9825,ok:12
+v3_box_sam_grabcut,Manual box/points + SAM + Canny + GrabCut,0,,,,skipped: box:12
+v4_box_sam_edge_only,Manual box/points + SAM + Canny + Edge refine,0,,,,skipped: box:12
+v5_yolo_box_sam_grabcut,YOLO detection + SAM + Canny + GrabCut,12,0.8422,0.2756,0.9827,ok:12
+v6_yolo_box_sam_edge_grabcut,YOLO detection + SAM + Canny + Edge refine + GrabCut,12,0.8855,0.7518,0.9827,ok:12
+v7_yolo_seg_only,YOLO-Seg direct mask + Canny + Edge refine,12,0.5768,0.3595,0.7151,ok:12
+v8_yolo_seg_grabcut,YOLO-Seg direct mask + Canny + GrabCut,12,0.7918,0.4671,0.8991,ok:12

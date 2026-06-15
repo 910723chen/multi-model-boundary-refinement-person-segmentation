@@ -1,0 +1,9 @@
+numpy
+opencv-python
+matplotlib
+Pillow
+torch
+torchvision
+segment-anything
+# Optional: only needed when using --yolo_model for automatic boxes
+ultralytics
