@@ -1,0 +1,176 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Length 3957 >>
+stream
+BT
+/F1 10 Tf
+14 TL
+/F1 16 Tf
+1 0 0 1 54 740 Tm
+(Multi-Model Boundary Refinement for Person Segmentation) Tj
+/F1 10 Tf
+1 0 0 1 54 726 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 712 Tm
+(Current Paper Preview) Tj
+/F1 10 Tf
+1 0 0 1 54 698 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 684 Tm
+(This PDF is a lightweight preview generated from the latest strict paper content.) Tj
+/F1 10 Tf
+1 0 0 1 54 670 Tm
+(The official editable paper source is paper/IEEE_Final_Project_Paper.tex.) Tj
+/F1 10 Tf
+1 0 0 1 54 656 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 642 Tm
+(Abstract) Tj
+/F1 10 Tf
+1 0 0 1 54 628 Tm
+(Person segmentation is useful in image editing, human-centered vision, and background) Tj
+/F1 10 Tf
+1 0 0 1 54 614 Tm
+(removal tasks, but final mask boundaries are often unstable around hair, clothing, shadows,) Tj
+/F1 10 Tf
+1 0 0 1 54 600 Tm
+(and complex backgrounds. This project studies a practical multi-model pipeline for improving) Tj
+/F1 10 Tf
+1 0 0 1 54 586 Tm
+(person boundary segmentation without training a new neural network. The workflow combines) Tj
+/F1 10 Tf
+1 0 0 1 54 572 Tm
+(YOLO-based person localization, SAM-based mask generation, Canny edge detection, edge-based) Tj
+/F1 10 Tf
+1 0 0 1 54 558 Tm
+(morphological refinement, and GrabCut foreground refinement.) Tj
+/F1 10 Tf
+1 0 0 1 54 544 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 530 Tm
+(Method Summary) Tj
+/F1 10 Tf
+1 0 0 1 54 516 Tm
+(Baseline v1: automatic SAM mask generation with Canny edge scoring and GrabCut.) Tj
+/F1 10 Tf
+1 0 0 1 54 502 Tm
+(Proposed v6: YOLO person detection creates an automatic SAM box prompt. The resulting mask) Tj
+/F1 10 Tf
+1 0 0 1 54 488 Tm
+(is refined by Canny-guided edge refinement and GrabCut.) Tj
+/F1 10 Tf
+1 0 0 1 54 474 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 460 Tm
+(Experimental Setup) Tj
+/F1 10 Tf
+1 0 0 1 54 446 Tm
+(The formal test set contains 12 selected person images from 34 uploaded photos. Six) Tj
+/F1 10 Tf
+1 0 0 1 54 432 Tm
+(automatic versions were batch-tested. Manual box or point prompt versions were prepared but) Tj
+/F1 10 Tf
+1 0 0 1 54 418 Tm
+(skipped in the formal batch because manual prompt annotations were not included.) Tj
+/F1 10 Tf
+1 0 0 1 54 404 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 390 Tm
+(Main Quantitative Result) Tj
+/F1 10 Tf
+1 0 0 1 54 376 Tm
+(v1 SAM auto + Canny score + GrabCut: mean edge alignment = 0.8708.) Tj
+/F1 10 Tf
+1 0 0 1 54 362 Tm
+(v6 YOLO detection + SAM + Canny + edge refine + GrabCut: mean edge alignment = 0.8855.) Tj
+/F1 10 Tf
+1 0 0 1 54 348 Tm
+(Absolute improvement over v1: 0.0147. Relative improvement: about 1.7 percent.) Tj
+/F1 10 Tf
+1 0 0 1 54 334 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 320 Tm
+(Interpretation) Tj
+/F1 10 Tf
+1 0 0 1 54 306 Tm
+(The result supports a modest preliminary improvement in edge alignment. YOLO helps reduce) Tj
+/F1 10 Tf
+1 0 0 1 54 292 Tm
+(target ambiguity by providing an automatic person box prompt for SAM. Edge refinement and) Tj
+/F1 10 Tf
+1 0 0 1 54 278 Tm
+(GrabCut improve boundary stability in the selected test set.) Tj
+/F1 10 Tf
+1 0 0 1 54 264 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 250 Tm
+(Strict Limitations) Tj
+/F1 10 Tf
+1 0 0 1 54 236 Tm
+(This project does not report IoU or Dice score because manually annotated ground-truth masks) Tj
+/F1 10 Tf
+1 0 0 1 54 222 Tm
+(are not included. Edge alignment is a proxy metric and should not be interpreted as complete) Tj
+/F1 10 Tf
+1 0 0 1 54 208 Tm
+(segmentation accuracy. The dataset is small, so the result should not be claimed as a) Tj
+/F1 10 Tf
+1 0 0 1 54 194 Tm
+(universal improvement over SAM, YOLO-Seg, or supervised segmentation models.) Tj
+/F1 10 Tf
+1 0 0 1 54 180 Tm
+() Tj
+/F1 10 Tf
+1 0 0 1 54 166 Tm
+(References Used) Tj
+/F1 10 Tf
+1 0 0 1 54 152 Tm
+([1] Segment Anything, ICCV 2023.) Tj
+/F1 10 Tf
+1 0 0 1 54 138 Tm
+([2] A Comprehensive Review of YOLO Architectures in Computer Vision, 2023.) Tj
+/F1 10 Tf
+1 0 0 1 54 124 Tm
+([3] SAM prompt evaluation studies.) Tj
+/F1 10 Tf
+1 0 0 1 54 110 Tm
+([4] Canny edge detection.) Tj
+/F1 10 Tf
+1 0 0 1 54 96 Tm
+([5] GrabCut foreground extraction.) Tj
+ET
+endstream
+endobj
+3 0 obj
+<< /Type /Page /Parent 4 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R >> >> /Contents 2 0 R >>
+endobj
+4 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+5 0 obj
+<< /Type /Catalog /Pages 4 0 R >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000079 00000 n 
+0000004088 00000 n 
+0000004214 00000 n 
+0000004271 00000 n 
+trailer
+<< /Size 6 /Root 5 0 R >>
+startxref
+4320
+%%EOF

@@ -8,6 +8,14 @@ Main file:
 IEEE_Final_Project_Paper.tex
 ```
 
+Quick preview file:
+
+```text
+Current_Paper_Preview.pdf
+```
+
+The preview PDF is included for quick review only. The official editable paper source is `IEEE_Final_Project_Paper.tex`.
+
 Required local files:
 
 ```text
@@ -27,6 +35,12 @@ pdflatex IEEE_Final_Project_Paper.tex
 ```
 
 The current checked machine did not expose `pdflatex`, `xelatex`, `lualatex`, `latexmk`, or `tectonic` in PowerShell, so the LaTeX source was prepared and checked, but not locally compiled into a new IEEE PDF.
+
+To regenerate the lightweight preview PDF:
+
+```powershell
+node paper/generate_current_paper_preview.mjs
+```
 
 Overleaf workflow:
 

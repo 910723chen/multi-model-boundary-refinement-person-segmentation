@@ -5,15 +5,18 @@ import sys
 from pathlib import Path
 
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--image_dir", default="test_images/processed")
-    parser.add_argument("--checkpoint", default="sam_vit_b_01ec64.pth")
+    parser.add_argument("--image_dir", default="test_images/final_selected")
+    parser.add_argument("--checkpoint", default="model_weights/sam_vit_b_01ec64.pth")
     parser.add_argument("--model_type", default="vit_b")
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--output_root", default="experiment_versions_test_images")
-    parser.add_argument("--yolo_model", default="yolov8n.pt")
-    parser.add_argument("--yolo_seg_model", default=None)
+    parser.add_argument("--yolo_model", default="model_weights/yolov8n.pt")
+    parser.add_argument("--yolo_seg_model", default="model_weights/yolov8n-seg.pt")
     parser.add_argument("--points_per_side", type=int, default=16)
     parser.add_argument("--target_class", default="person")
     return parser.parse_args()
@@ -44,7 +47,7 @@ def main():
         image_output = output_root / image_path.stem
         command = [
             sys.executable,
-            "run_experiment_versions.py",
+            str(SCRIPT_DIR / "run_experiment_versions.py"),
             "--image_path",
             str(image_path),
             "--checkpoint",

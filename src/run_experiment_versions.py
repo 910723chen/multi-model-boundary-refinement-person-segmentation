@@ -6,6 +6,9 @@ import sys
 from pathlib import Path
 
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
 VERSION_DEFINITIONS = [
     {
         "name": "v1_sam_auto_grabcut",
@@ -109,7 +112,7 @@ def add_repeated_points(command, flag, points):
 def build_command(version, args, output_dir):
     command = [
         sys.executable,
-        "sam_boundary_refinement.py",
+        str(SCRIPT_DIR / "sam_boundary_refinement.py"),
         "--image_path",
         args.image_path,
         "--checkpoint",

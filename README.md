@@ -50,7 +50,9 @@ github_release/
     summary_tables/
     visual_assets/
   paper/
+    Current_Paper_Preview.pdf
     IEEE_Final_Project_Paper.tex
+    generate_current_paper_preview.mjs
     figures/
     paper_used_images/
   presentation/
@@ -100,24 +102,33 @@ python src/sam_boundary_refinement.py `
   --image_path test_images/final_selected/final_01_11_IMG_1359.jpg `
   --checkpoint model_weights/sam_vit_b_01ec64.pth `
   --yolo_model model_weights/yolov8n.pt `
-  --use_yolo_box `
   --edge_refine `
   --output_dir outputs/example_v6
 ```
 
-Run the version-comparison batch script:
+Run the version-comparison script on one selected image:
 
 ```powershell
-python src/run_experiment_versions.py
+python src/run_experiment_versions.py `
+  --image_path test_images/final_selected/final_01_11_IMG_1359.jpg `
+  --checkpoint model_weights/sam_vit_b_01ec64.pth `
+  --yolo_model model_weights/yolov8n.pt `
+  --yolo_seg_model model_weights/yolov8n-seg.pt `
+  --output_root outputs/experiment_versions_example
 ```
 
-Run the selected-image batch script:
+Run the selected-image batch script on the 12 included test images:
 
 ```powershell
-python src/run_batch_test_images.py
+python src/run_batch_test_images.py `
+  --image_dir test_images/final_selected `
+  --checkpoint model_weights/sam_vit_b_01ec64.pth `
+  --yolo_model model_weights/yolov8n.pt `
+  --yolo_seg_model model_weights/yolov8n-seg.pt `
+  --output_root outputs/batch_test
 ```
 
-Depending on local paths, script arguments may need to be adjusted.
+The commands assume they are run from the repository root after the required model weights have been placed in `model_weights/`.
 
 ## Paper and Presentation
 
@@ -127,7 +138,13 @@ The project paper source is located at:
 paper/IEEE_Final_Project_Paper.tex
 ```
 
-The latest strict paper source is the `.tex` file. A compiled PDF is intentionally not included in this GitHub release because the previously generated PDF was older than the final strict source. To generate the final PDF, compile `paper/IEEE_Final_Project_Paper.tex` with the files in `paper/figures/`, for example by using Overleaf or a local LaTeX installation.
+A directly viewable paper preview is located at:
+
+```text
+paper/Current_Paper_Preview.pdf
+```
+
+The latest strict paper source is still the `.tex` file. To generate the final IEEE-style PDF, compile `paper/IEEE_Final_Project_Paper.tex` with the files in `paper/figures/`, for example by using Overleaf or a local LaTeX installation. The preview PDF is included only so reviewers can quickly inspect the current paper content without compiling LaTeX.
 
 The presentation files are located in:
 
