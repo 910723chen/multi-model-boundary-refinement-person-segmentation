@@ -11,3 +11,5 @@ yolov8n-seg.pt
 ```
 
 Do not commit these files directly to GitHub. The SAM checkpoint exceeds GitHub's normal single-file size limit.
+
+See `DOWNLOAD_MODEL_WEIGHTS.md` for download instructions and official reference links.

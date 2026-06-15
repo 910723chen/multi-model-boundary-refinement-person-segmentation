@@ -12,9 +12,9 @@ SUPPORTED_INPUTS = {".jpg", ".jpeg", ".png", ".heic", ".heif"}
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--zip_path", default="人工智慧應用測試用照片.zip")
+    parser.add_argument("--zip_path", default="raw_test_photos.zip")
     parser.add_argument("--raw_dir", default="test_images/raw")
-    parser.add_argument("--processed_dir", default="test_images/processed")
+    parser.add_argument("--processed_dir", default="test_images/final_selected")
     parser.add_argument("--max_side", type=int, default=1600)
     return parser.parse_args()
 

@@ -33,6 +33,8 @@ This result should be interpreted as a preliminary boundary-alignment improvemen
 ```text
 github_release/
   README.md
+  DATASET_NOTICE.md
+  LICENSE
   release_manifest.csv
   requirements.txt
   .gitignore
@@ -41,9 +43,9 @@ github_release/
     run_experiment_versions.py
     run_batch_test_images.py
     prepare_test_images.py
-    build_progress_report_assets.py
   model_weights/
     README.md
+    DOWNLOAD_MODEL_WEIGHTS.md
   test_images/
     final_selected/
   results/
@@ -76,6 +78,12 @@ yolov8n-seg.pt
 
 The SAM checkpoint is larger than GitHub's normal file limit, so it should not be committed directly.
 
+Download instructions and official references are provided in:
+
+```text
+model_weights/DOWNLOAD_MODEL_WEIGHTS.md
+```
+
 ## Setup
 
 Create a Python environment and install dependencies:
@@ -90,8 +98,9 @@ Expected major libraries:
 - OpenCV
 - NumPy
 - PyTorch
-- Segment Anything
+- Segment Anything, installed from the official GitHub repository
 - Ultralytics YOLO
+- pillow-heif, only needed when converting HEIC/HEIF photos with `prepare_test_images.py`
 
 ## Example Usage
 
@@ -158,6 +167,20 @@ presentation/
 - Edge alignment is a proxy metric, not a replacement for IoU or Dice score.
 - No manually annotated ground-truth masks are included.
 - The result should not be claimed as a universal improvement over SAM, YOLO-Seg, or supervised segmentation models.
+
+## Dataset and License Notes
+
+The included test images are course demonstration data, not a public benchmark dataset. See:
+
+```text
+DATASET_NOTICE.md
+```
+
+Repository usage terms are described in:
+
+```text
+LICENSE
+```
 
 ## Future Work
 

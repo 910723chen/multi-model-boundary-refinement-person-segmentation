@@ -2,8 +2,8 @@ numpy
 opencv-python
 matplotlib
 Pillow
+pillow-heif
 torch
 torchvision
-segment-anything
-# Optional: only needed when using --yolo_model for automatic boxes
+git+https://github.com/facebookresearch/segment-anything.git
 ultralytics

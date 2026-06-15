@@ -14,6 +14,7 @@ env/
 # Model weights and large binaries
 model_weights/*
 !model_weights/README.md
+!model_weights/DOWNLOAD_MODEL_WEIGHTS.md
 *.pth
 *.pt
 *.onnx
