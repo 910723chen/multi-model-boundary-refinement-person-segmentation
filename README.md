@@ -51,7 +51,6 @@ github_release/
     visual_assets/
   paper/
     IEEE_Final_Project_Paper.tex
-    Final_Project_Paper.pdf
     figures/
     paper_used_images/
   presentation/
@@ -128,7 +127,7 @@ The project paper source is located at:
 paper/IEEE_Final_Project_Paper.tex
 ```
 
-The compiled PDF currently included in `paper/Final_Project_Paper.pdf` is provided for reference. For the latest strict paper source, compile the `.tex` file with the files in `paper/figures/`.
+The latest strict paper source is the `.tex` file. A compiled PDF is intentionally not included in this GitHub release because the previously generated PDF was older than the final strict source. To generate the final PDF, compile `paper/IEEE_Final_Project_Paper.tex` with the files in `paper/figures/`, for example by using Overleaf or a local LaTeX installation.
 
 The presentation files are located in:
 
