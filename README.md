@@ -38,6 +38,9 @@ github_release/
   release_manifest.csv
   requirements.txt
   .gitignore
+  docs/
+    PROJECT_WORKFLOW.md
+    EVALUATION_NOTES.md
   src/
     sam_boundary_refinement.py
     run_experiment_versions.py
@@ -62,6 +65,18 @@ github_release/
     Final_Project_Presentation_ROUGH_FIXED_IMAGES.pptx
     previews/
   references/
+```
+
+For the complete project story, method explanation, conclusion, and future work, see:
+
+```text
+docs/PROJECT_WORKFLOW.md
+```
+
+For the edge-alignment metric, the reason v7 is weak, and the current single-person limitation, see:
+
+```text
+docs/EVALUATION_NOTES.md
 ```
 
 ## Model Weights
