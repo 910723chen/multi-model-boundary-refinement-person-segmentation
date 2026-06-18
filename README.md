@@ -31,7 +31,7 @@ This result should be interpreted as a preliminary boundary-alignment improvemen
 ## Repository Structure
 
 ```text
-github_release/
+repository root/
   README.md
   DATASET_NOTICE.md
   LICENSE
@@ -41,6 +41,8 @@ github_release/
   docs/
     PROJECT_WORKFLOW.md
     EVALUATION_NOTES.md
+    REPRODUCIBILITY.md
+    PROFESSOR_REVIEW.md
   src/
     sam_boundary_refinement.py
     run_experiment_versions.py
@@ -79,6 +81,18 @@ For the edge-alignment metric, the reason v7 is weak, and the current single-per
 docs/EVALUATION_NOTES.md
 ```
 
+For exact reproduction steps and expected generated files, see:
+
+```text
+docs/REPRODUCIBILITY.md
+```
+
+For a strict professor-style repository review and current score estimate, see:
+
+```text
+docs/PROFESSOR_REVIEW.md
+```
+
 ## Model Weights
 
 Large model files are intentionally not included in this GitHub release.
@@ -101,7 +115,7 @@ model_weights/DOWNLOAD_MODEL_WEIGHTS.md
 
 ## Setup
 
-Create a Python environment and install dependencies:
+Create a Python 3.10 or 3.11 environment and install dependencies:
 
 ```powershell
 pip install -r requirements.txt
@@ -116,6 +130,14 @@ Expected major libraries:
 - Segment Anything, installed from the official GitHub repository
 - Ultralytics YOLO
 - pillow-heif, only needed when converting HEIC/HEIF photos with `prepare_test_images.py`
+
+Quick code sanity check:
+
+```powershell
+python -m compileall src
+python src/run_experiment_versions.py --help
+python src/run_batch_test_images.py --help
+```
 
 ## Example Usage
 
@@ -154,6 +176,8 @@ python src/run_batch_test_images.py `
 
 The commands assume they are run from the repository root after the required model weights have been placed in `model_weights/`.
 
+Generated experiment outputs are intentionally ignored by Git and should appear under `outputs/` or the chosen `--output_root` path.
+
 ## Paper and Presentation
 
 The project paper source is located at:
@@ -182,6 +206,16 @@ presentation/
 - Edge alignment is a proxy metric, not a replacement for IoU or Dice score.
 - No manually annotated ground-truth masks are included.
 - The result should not be claimed as a universal improvement over SAM, YOLO-Seg, or supervised segmentation models.
+- The current implementation is single-target person segmentation. Multi-person images are reduced to the best detected person box.
+
+## References
+
+Core references are listed in:
+
+```text
+references/supporting_papers_summary.md
+references/references.bib
+```
 
 ## Dataset and License Notes
 
