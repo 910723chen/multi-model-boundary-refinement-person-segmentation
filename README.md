@@ -57,6 +57,7 @@ repository root/
     summary_tables/
     visual_assets/
   paper/
+    Final_Project_Paper.pdf
     Current_Paper_Preview.pdf
     IEEE_Final_Project_Paper.tex
     generate_current_paper_preview.mjs
@@ -186,13 +187,13 @@ The project paper source is located at:
 paper/IEEE_Final_Project_Paper.tex
 ```
 
-A directly viewable paper preview is located at:
+A directly viewable final paper PDF is located at:
 
 ```text
-paper/Current_Paper_Preview.pdf
+paper/Final_Project_Paper.pdf
 ```
 
-The latest strict paper source is still the `.tex` file. To generate the final IEEE-style PDF, compile `paper/IEEE_Final_Project_Paper.tex` with the files in `paper/figures/`, for example by using Overleaf or a local LaTeX installation. The preview PDF is included only so reviewers can quickly inspect the current paper content without compiling LaTeX.
+The final submitted PDF is treated as the canonical final paper artifact. The editable IEEE source is still kept in `paper/IEEE_Final_Project_Paper.tex`; to regenerate the PDF, compile that file with the files in `paper/figures/`, for example by using Overleaf or a local LaTeX installation. `paper/Current_Paper_Preview.pdf` is kept as a duplicate quick-view copy for compatibility with earlier repository documentation.
 
 The presentation files are located in:
 

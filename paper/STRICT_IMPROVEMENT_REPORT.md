@@ -8,6 +8,24 @@ IEEE_Final_Project_Paper.tex
 
 ## Completed Improvements
 
+0. Expanded the IEEE LaTeX source toward an approximately six-page paper.
+   - Added multi-model design rationale.
+   - Added version-design and execution-flow explanation.
+   - Added dataset selection detail, per-version result interpretation, failure-mode analysis, and a concrete next-step evaluation plan.
+   - Kept all claims tied to the existing 12-image edge-alignment experiment.
+
+0a. Added roughly two more pages of IEEE-style content after the six-page expansion.
+   - Added research-question framing in the introduction.
+   - Added implementation details and an output-artifact table.
+   - Added an evaluation protocol section and ablation-oriented interpretation.
+   - Added threats to validity and practical implications sections.
+   - Continued to avoid unsupported IoU, Dice, or broad generalization claims.
+
+0b. Synchronized the paper package with the final compiled PDF supplied on June 19, 2026.
+   - Treated `Final_Project_Paper.pdf` as the canonical final paper artifact.
+   - Updated the IEEE author block to `Marco` and `YZU`, matching the final PDF.
+   - Copied the final compiled PDF into the paper package.
+
 1. Added an explicit system block diagram directly in LaTeX.
    - Separates the main proposed path from the baseline and evaluation path.
    - No external image conversion dependency is required.

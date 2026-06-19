@@ -14,10 +14,10 @@
 \title{Multi-Model Boundary Refinement for Person Segmentation}
 
 \author{
-\IEEEauthorblockN{Final Project Team}
+\IEEEauthorblockN{Marco}
 \IEEEauthorblockA{\textit{Artificial Intelligence Applications Course Project} \\
 \textit{Course Final Report} \\
-Taiwan}
+YZU}
 }
 
 \maketitle
@@ -42,6 +42,10 @@ The main contributions of this project are:
 \item a preliminary experimental comparison on twelve selected person images from a larger set of uploaded test photos.
 \end{itemize}
 
+The project is guided by three practical research questions. First, can automatic person localization make SAM more stable than fully automatic mask generation for this task? Second, can a lightweight edge-based refinement step improve the reliability of the final boundary? Third, when no manually labeled masks are available, can an edge-based proxy metric still provide a useful but limited comparison between version settings? These questions keep the work at an appropriate course-project scale. The goal is to make the segmentation workflow more systematic and explainable, not to claim a new state-of-the-art segmentation model.
+
+The paper therefore uses cautious language throughout the result analysis. A better edge-alignment score is treated as evidence of improved boundary consistency on the selected image set, not as proof of universal segmentation accuracy. This distinction matters because the output is intended for a final course report and should remain technically honest. The experimental comparison is still useful because all versions process the same images under the same script structure, but the result should be strengthened in future work with ground-truth annotation.
+
 \section{Related Work}
 \subsection{Promptable Segmentation}
 The Segment Anything Model (SAM) introduced promptable segmentation, where a mask can be generated from prompts such as points, boxes, or existing masks \cite{kirillov2023segmentanything}. This makes SAM suitable for a course project because the model can be used directly without collecting a large training dataset. However, SAM output depends strongly on prompt quality. If the prompt is ambiguous or if automatic mask selection chooses the wrong region, the final mask may not correspond to the intended person.
@@ -55,6 +59,11 @@ YOLO models are widely used for efficient object detection. A review of YOLO arc
 Canny edge detection is a classical method for extracting structural image edges \cite{canny1986computational}. In this project, Canny edges are not treated as the final segmentation result. Instead, they are used as a boundary signal to judge whether the predicted mask boundary is close to visible image edges.
 
 GrabCut is an interactive foreground extraction method based on iterated graph cuts \cite{rother2004grabcut}. It uses foreground and background information to refine object separation. This project uses the model-generated mask as an initialization for GrabCut, making it a lightweight post-processing module rather than an interactive tool.
+
+\subsection{Multi-Model Design Rationale}
+The reviewed methods suggest that each module is strong at a different part of the problem. YOLO is reliable for locating a person region, SAM is flexible for generating a mask from a prompt, Canny preserves visible boundary structure, and GrabCut provides a traditional foreground-background refinement mechanism. The design of this project is therefore based on division of responsibility rather than replacing one model with another. The detector narrows the search region, the promptable model generates the main object mask, and the classical refinement steps check whether the mask boundary follows visible image evidence.
+
+This framing is important because the project does not train a new supervised segmentation model. A supervised approach would require a larger labeled dataset and manually annotated masks. Instead, the system tests whether existing components can be combined into a practical course-level workflow. The related work supports this direction: SAM studies motivate prompt quality, YOLO studies motivate automatic localization, and classical edge and graph-cut methods motivate boundary-oriented post-processing.
 
 \section{Methodology}
 \subsection{System Overview}
@@ -95,6 +104,13 @@ The final system is organized as a modular pipeline. Each input image is process
 \label{fig:progress}
 \end{figure}
 
+\subsection{Version Design and Execution Flow}
+The version design was created to isolate the effect of each major module. Versions v1 and v2 test automatic SAM without YOLO guidance, so they represent the non-localized baseline family. Versions v5 and v6 add YOLO box localization before SAM, which tests whether a detector-generated prompt can make SAM focus on the intended person. Versions v7 and v8 use YOLO-Seg directly, which separates the question of localization from the question of mask quality. This organization makes the comparison more meaningful than testing only one final pipeline.
+
+The batch runner processes all selected images with the same version definitions. For each image and version, it saves the initial mask, refined mask, edge map, overlay comparison, command information, and metric file. This folder-level structure makes the experiment reproducible because each result can be traced back to the executed version and the exact image. It also reduces subjective selection: the paper reports the averaged results over the twelve selected formal test images rather than only showing the best visual examples.
+
+The final method is version v6 because it contains the complete automatic pipeline: YOLO detection, SAM mask generation, edge-based candidate selection, and GrabCut refinement. Manual prompt versions were kept in the implementation for demonstration, but they were not included in the batch comparison because they require human-provided boxes or points. The reported final result therefore focuses on methods that can run automatically across all selected test images.
+
 \subsection{YOLO-Guided SAM}
 In the strongest version of the pipeline, YOLOv8n first detects the person bounding box. The detected box is expanded slightly and then used as a box prompt for SAM. This design reduces the ambiguity of automatic mask selection because SAM receives a target region instead of searching the entire image freely.
 
@@ -111,14 +127,51 @@ where $M$ is the predicted mask, $B(M)$ is the mask boundary, $E$ is the Canny e
 
 This metric is useful for comparing boundary behavior inside this project, but it is not a replacement for IoU or Dice score. A high edge alignment score does not always mean that the whole person mask is correct, especially when background edges are strong.
 
+The implementation also treats edge alignment as a relative comparison instead of an absolute quality label. A score close to one means that the predicted boundary lies near many Canny edges, but it does not prove that the foreground region is semantically correct. For example, clothing folds, wall patterns, shadows, or nearby objects can produce strong edges that attract the score even when the person mask is imperfect. For this reason, the paper combines the metric table with visual examples and a limitation case.
+
 \subsection{Edge Refinement and GrabCut}
 The edge refinement module generates several candidate masks using morphological opening, closing, erosion, and dilation. Each candidate is accepted only if its area remains close to the original mask area. The candidate with the highest edge alignment score is selected.
 
 GrabCut is then used as a post-processing step. The initial model mask is converted into a foreground-background initialization. To avoid destructive refinement, the implementation compares the refined edge score with the initial score and rejects the GrabCut result if the boundary quality decreases too much.
 
+\subsection{Implementation Details}
+The implementation is organized around two levels of scripts. The first level runs a single image through a selected segmentation workflow and writes the mask, edge map, visual comparison, command record, and metrics. The second level repeats this process over a folder of prepared test images and aggregates the results into summary tables. This design was chosen because the project needs both visual demonstration and repeatable quantitative comparison. A single successful example is not enough to support the final conclusion, so the batch runner makes every selected image pass through the same version list.
+
+For YOLO-guided SAM, the detector first selects the target person box. The selected box is used as the prompt region for SAM, which reduces the chance that SAM will select an unrelated object or background region. After SAM produces the initial person mask, the system keeps the relevant connected component and applies morphology-based cleanup. This step is useful because small isolated regions may appear near the body or background and would otherwise affect both visual quality and the boundary score.
+
+The edge-refinement step is intentionally conservative. Candidate masks are generated by small morphological changes, but a candidate is rejected if its area changes too much compared with the original mask. This prevents the score from improving only because the mask expands into unrelated background edges. The selected candidate is then passed to GrabCut, and the refined output is accepted only when it does not strongly degrade the boundary evidence. In practice, this acceptance logic is important because GrabCut can improve foreground separation in some images but may damage thin details or remove uncertain body parts in others.
+
+\begin{table}[htbp]
+\caption{Main Output Artifacts Saved by the Pipeline}
+\begin{center}
+\begin{tabular}{|p{2.3cm}|p{4.5cm}|}
+\hline
+\textbf{Artifact} & \textbf{Purpose in the Report Workflow} \\
+\hline
+\texttt{sam\_mask.png} & Stores the initial model-generated mask before final refinement. \\
+\hline
+\texttt{refined\_mask.png} & Stores the final mask after edge refinement and/or GrabCut. \\
+\hline
+\texttt{edge\_map.png} & Records the Canny edge map used for boundary comparison. \\
+\hline
+\texttt{overlay\_comparison.png} & Provides a visual check of the original image, initial mask, and refined result. \\
+\hline
+\texttt{metrics.txt} & Stores edge-alignment values and optional IoU/Dice values when ground truth is provided. \\
+\hline
+\texttt{command.json} & Records the version command and parameters for reproducibility. \\
+\hline
+\end{tabular}
+\label{tab:artifacts}
+\end{center}
+\end{table}
+
+Table~\ref{tab:artifacts} shows why the implementation is suitable for a paper-style report. The visual artifacts support qualitative comparison, while the metrics and command files support reproducibility. This combination is especially useful in a small project where the dataset is limited and every claim should be traceable to a saved output file.
+
 \section{Experimental Setup}
 \subsection{Dataset}
 The test data came from photos uploaded for the final project. The workflow started with 34 raw photos. After conversion and YOLO-based screening, 12 images were selected as the formal test set. The selected images include different backgrounds, poses, lighting conditions, and person sizes. This is a small test set, so the result should be treated as a preliminary course-project result rather than a general benchmark.
+
+The image selection procedure tried to avoid using only easy cases. The selected set includes outdoor and indoor backgrounds, different person scales, and cases where clothing or body boundaries are not perfectly separated from the environment. Images that could not be processed reliably by the automated pipeline were excluded from the formal comparison, but the remaining test set still includes enough variation to reveal differences between the version families. The same twelve images were used for every reported version so that the mean, minimum, and maximum scores are comparable.
 
 \subsection{Baseline and Proposed Method}
 To avoid ambiguous comparison, this report defines one baseline method and one proposed final method before presenting the complete version list. The baseline is the strongest simple pipeline available before adding YOLO guidance. The proposed method is the final automatic pipeline selected after adding localization and boundary refinement. Table~\ref{tab:baseline_proposed} summarizes this definition.
@@ -170,6 +223,13 @@ v8 & YOLO-Seg direct mask + Canny + GrabCut & 12 \\
 \end{center}
 \end{table}
 
+\subsection{Evaluation Protocol}
+The evaluation protocol uses the same twelve selected images for every automatic version. Each run produces a refined mask and an edge-alignment score. The batch summary then computes the mean, minimum, and maximum score for each version. The mean score indicates average boundary consistency, the minimum score highlights severe failure cases, and the maximum score shows the best-case behavior. Reporting all three values is useful because a method can have a strong mean but still fail badly on a small number of images.
+
+The comparison is not designed to prove that one model is universally superior. Instead, it answers a narrower question: under the current dataset and implementation, which combination of modules gives the most stable edge-alignment behavior? This is why the paper compares version families instead of only comparing the baseline and final method. Versions v1 and v2 isolate automatic SAM behavior, versions v5 and v6 isolate YOLO-guided SAM behavior, and versions v7 and v8 isolate direct YOLO-Seg behavior. The final method is selected from this controlled comparison.
+
+The evaluation also includes qualitative inspection through representative and limitation figures. This is necessary because edge alignment is a boundary proxy and can be affected by background structure. Visual inspection helps detect cases where a high score is not fully consistent with semantic person segmentation. Therefore, the quantitative table and the visual figures should be read together.
+
 \section{Results}
 Table~\ref{tab:results} shows the quantitative comparison. The baseline version v1 achieved a mean edge alignment score of 0.8708. The best final version was v6, which achieved a mean score of 0.8855. This is an absolute improvement of 0.0147 and a relative improvement of about 1.7\% over the baseline. The improvement is modest, but v6 also had a stronger minimum score than v5, which suggests better stability across the selected images.
 
@@ -213,6 +273,17 @@ The visual comparison in Fig.~\ref{fig:representative} shows a representative ca
 
 YOLO-Seg alone performed the weakest among the tested automatic versions, with a mean score of 0.5768. Adding GrabCut to YOLO-Seg improved the mean score to 0.7918, but it still remained below the SAM-based versions. This suggests that direct YOLO-Seg output is not enough for this dataset, but it can still provide useful initial masks for post-processing.
 
+The per-version pattern is also informative. Version v5 uses YOLO-guided SAM and GrabCut, but its minimum score is only 0.2756, which indicates that localization alone did not guarantee stable refinement on every image. Version v6 adds edge refinement before GrabCut and raises the minimum score to 0.7518, suggesting that the additional boundary-selection step reduced severe failure cases in the selected test set. Meanwhile, v2 slightly underperformed v1 on the mean score even though it added edge refinement, showing that refinement is not always beneficial when the initial automatic SAM mask is already acceptable. These observations support the final design choice: the best result came from combining YOLO guidance with edge refinement and GrabCut, not from adding any single module independently.
+
+\subsection{Ablation-Oriented Interpretation}
+Although the experiment is not a full academic ablation study, the version table provides a useful ablation-oriented interpretation. Comparing v1 and v2 tests whether edge refinement improves automatic SAM output. In this experiment, v2 did not improve the mean score over v1, which suggests that automatic SAM already produced usable boundaries in several cases and that additional refinement can sometimes over-adjust the mask. This prevents the paper from claiming that edge refinement is always beneficial.
+
+Comparing v5 and v6 tests the effect of adding edge refinement to YOLO-guided SAM. Here, v6 improves both the mean score and the minimum score. This pattern suggests that the edge-refinement module becomes more useful after YOLO has already reduced the target ambiguity for SAM. In other words, edge refinement is most helpful when the initial mask is already focused on the correct person region. If the starting mask is ambiguous, optimizing boundary alignment alone may not fix the semantic target.
+
+Comparing v7 and v8 tests whether GrabCut can improve direct YOLO-Seg output. The increase from v7 to v8 shows that GrabCut can make the YOLO-Seg mask more consistent with image boundaries. However, v8 still remains below the SAM-based methods on the mean score. This suggests that YOLO-Seg is useful as a fast direct segmentation baseline, but for this particular selected set, SAM-based masks guided by detection boxes provide stronger boundary behavior.
+
+The most important practical result is therefore not only that v6 has the highest mean score. The more useful conclusion is that module order matters. YOLO localization before SAM helps reduce ambiguity, edge refinement helps select a boundary candidate, and GrabCut can improve foreground-background separation when the initialization is reasonable. The same modules in weaker contexts do not necessarily produce the same gain.
+
 \section{Discussion}
 The best result came from v6 because each module has a specific role. YOLO provides target localization, SAM generates a detailed segmentation mask from the detected box, edge refinement searches for a boundary that better matches local image edges, and GrabCut improves foreground-background separation. The combined design is more stable than using YOLO-Seg directly and slightly better than using automatic SAM with GrabCut.
 
@@ -241,16 +312,54 @@ Dice score & Not reported & Requires manually labeled ground-truth masks. \\
 
 Fig.~\ref{fig:limitation} shows that failure cases can still occur when the subject boundary is visually ambiguous, when there are strong background edges, or when the person detection box does not fully represent the desired segmentation region.
 
+\begin{table}[htbp]
+\caption{Observed Failure Modes and Likely Causes}
+\begin{center}
+\begin{tabular}{|p{2.2cm}|p{4.6cm}|}
+\hline
+\textbf{Failure mode} & \textbf{Likely cause} \\
+\hline
+Boundary leakage & Background texture or shadow edges are close to the person boundary, so the edge-alignment signal can favor an incorrect contour. \\
+\hline
+Missing body parts & The detected box or SAM candidate mask may not fully cover thin structures such as arms, hair, or clothing details. \\
+\hline
+Over-smoothed mask & Morphological cleanup and GrabCut can remove small details when the initial mask is already narrow. \\
+\hline
+Wrong target emphasis & Automatic SAM mask selection can prefer a visually strong object or region instead of the intended person when no clear prompt is provided. \\
+\hline
+\end{tabular}
+\label{tab:failure_modes}
+\end{center}
+\end{table}
+
+Table~\ref{tab:failure_modes} explains why the method should be viewed as a practical refinement pipeline rather than a complete solution to person segmentation. The failure modes also show why a single proxy metric is not enough. A visually better mask may sometimes have a similar edge score, while a high-scoring mask may still contain semantic errors. This is the main reason the conclusion emphasizes preliminary evidence and recommends manual annotation for future evaluation.
+
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=\linewidth]{figures/limitation_case_comparison.jpg}}
 \caption{Limitation case. The proposed pipeline improves several examples but can still fail under ambiguous boundaries or strong background edges.}
 \label{fig:limitation}
 \end{figure}
 
+\subsection{Threats to Validity}
+The first threat to validity is dataset size. Twelve selected images are enough to show a course-project comparison, but they are not enough to claim broad robustness. The selected photos were collected from the project workflow rather than from a standardized public benchmark. This means the result mainly describes the current project setting and should not be generalized to all person segmentation tasks.
+
+The second threat is the absence of manual ground truth. Because no hand-labeled binary masks are available, the paper cannot compute IoU or Dice score. Edge alignment is useful for measuring whether a predicted boundary follows visible image edges, but it does not evaluate whether every foreground pixel belongs to the person. This is the most important limitation of the current experiment.
+
+The third threat is metric bias. Canny edges can appear on clothing texture, background patterns, floor lines, shadows, or nearby objects. A mask boundary that follows these edges may receive a higher score even if it is not semantically correct. Conversely, a visually acceptable person boundary may receive a lower score if the image boundary is blurred or low contrast. This is why the paper treats the metric as a proxy and includes qualitative examples.
+
+The fourth threat is implementation dependency. The result depends on the specific YOLO and SAM model files, image preprocessing, morphology settings, GrabCut settings, and acceptance rules used in the scripts. Different thresholds or a different SAM backbone could change the ranking. To reduce this risk, the project saves command records and summary files so that the experiment can be rerun and audited.
+
+\subsection{Practical Implications}
+Despite these limitations, the pipeline has practical value for a small application or classroom demonstration. It shows that existing models and classical image-processing tools can be assembled into a more explainable segmentation workflow. YOLO provides a clear localization step, SAM provides the main segmentation mask, edge alignment provides a boundary-oriented diagnostic signal, and GrabCut provides a final refinement option. Each component has an interpretable role, which makes the system easier to debug than a single black-box output.
+
+The system is also useful as a foundation for future improvement. If ground-truth masks are added later, the same pipeline can report IoU and Dice without changing the core model flow. If more difficult images are collected, the same batch runner can produce a larger result table. If runtime becomes important, the comparison can be extended with processing time per version. These extensions would turn the project from a preliminary boundary-refinement study into a stronger evaluation package.
+
 \section{Conclusion}
 This project developed and tested a practical multi-model boundary refinement pipeline for person segmentation. The system combines YOLO detection, SAM segmentation, Canny edge-based boundary scoring, morphological edge refinement, and GrabCut foreground refinement. On twelve selected test images, the best version was YOLO-guided SAM with edge refinement and GrabCut, reaching a mean edge alignment score of 0.8855 compared with 0.8708 for the baseline.
 
 The main conclusion is that using YOLO as an automatic box-prompt generator helps SAM focus on the intended person, and lightweight refinement modules can improve boundary stability. The improvement is modest and should be described as a preliminary improvement in edge alignment, not as a complete segmentation-accuracy claim. For future work, the project should add manually annotated ground-truth masks and evaluate IoU and Dice score. A larger test set with more difficult poses, occlusions, and backgrounds would also make the result more reliable.
+
+The most direct next step is to annotate a small ground-truth subset first, such as three to five representative images, and compute IoU and Dice for v1 and v6. This would verify whether the edge-alignment improvement corresponds to actual segmentation accuracy. After that, the same evaluation can be expanded to the full twelve-image test set and then to more difficult photos. The current implementation already includes a ground-truth mask input option, so the evaluation can be strengthened without redesigning the pipeline.
 
 \section*{Acknowledgment}
 This work was completed as a final project for an Artificial Intelligence Applications course.

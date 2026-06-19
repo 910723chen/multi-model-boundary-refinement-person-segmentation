@@ -8,13 +8,11 @@ Main file:
 IEEE_Final_Project_Paper.tex
 ```
 
-Quick preview file:
+Current source status:
 
 ```text
-Current_Paper_Preview.pdf
+Final_Project_Paper.pdf is now the canonical final compiled paper artifact provided on June 19, 2026. The LaTeX source has been expanded from the previous 5-page draft toward a longer IEEE conference paper and synchronized with the final PDF's author block: Marco, Artificial Intelligence Applications Course Project, Course Final Report, YZU.
 ```
-
-The preview PDF is included for quick review only. The official editable paper source is `IEEE_Final_Project_Paper.tex`.
 
 Required local files:
 
@@ -35,12 +33,6 @@ pdflatex IEEE_Final_Project_Paper.tex
 ```
 
 The current checked machine did not expose `pdflatex`, `xelatex`, `lualatex`, `latexmk`, or `tectonic` in PowerShell, so the LaTeX source was prepared and checked, but not locally compiled into a new IEEE PDF.
-
-To regenerate the lightweight preview PDF:
-
-```powershell
-node paper/generate_current_paper_preview.mjs
-```
 
 Overleaf workflow:
 
