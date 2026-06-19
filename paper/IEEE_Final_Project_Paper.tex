@@ -6,6 +6,9 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcommand{\filecell}[2]{\begin{tabular}[t]{@{}l@{}}\texttt{\scriptsize #1}\\[-0.2em]\texttt{\scriptsize #2}\end{tabular}}
+\newcommand{\filecellthree}[3]{\begin{tabular}[t]{@{}l@{}}\texttt{\scriptsize #1}\\[-0.2em]\texttt{\scriptsize #2}\\[-0.2em]\texttt{\scriptsize #3}\end{tabular}}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
@@ -144,21 +147,24 @@ The edge-refinement step is intentionally conservative. Candidate masks are gene
 \begin{table}[htbp]
 \caption{Main Output Artifacts Saved by the Pipeline}
 \begin{center}
-\begin{tabular}{|p{2.3cm}|p{4.5cm}|}
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{|L{2.05cm}|L{4.65cm}|}
 \hline
 \textbf{Artifact} & \textbf{Purpose in the Report Workflow} \\
 \hline
-\texttt{sam\_mask.png} & Stores the initial model-generated mask before final refinement. \\
+\filecell{sam\_mask}{.png} & Stores the initial model-generated mask before final refinement. \\
 \hline
-\texttt{refined\_mask.png} & Stores the final mask after edge refinement and/or GrabCut. \\
+\filecell{refined\_mask}{.png} & Stores the final mask after edge refinement and/or GrabCut. \\
 \hline
-\texttt{edge\_map.png} & Records the Canny edge map used for boundary comparison. \\
+\filecell{edge\_map}{.png} & Records the Canny edge map used for boundary comparison. \\
 \hline
-\texttt{overlay\_comparison.png} & Provides a visual check of the original image, initial mask, and refined result. \\
+\filecellthree{overlay\_}{comparison}{.png} & Provides a visual check of the original image, initial mask, and refined result. \\
 \hline
-\texttt{metrics.txt} & Stores edge-alignment values and optional IoU/Dice values when ground truth is provided. \\
+\filecell{metrics}{.txt} & Stores edge-alignment values and optional IoU/Dice values when ground truth is provided. \\
 \hline
-\texttt{command.json} & Records the version command and parameters for reproducibility. \\
+\filecell{command}{.json} & Records the version command and parameters for reproducibility. \\
 \hline
 \end{tabular}
 \label{tab:artifacts}
@@ -179,7 +185,10 @@ To avoid ambiguous comparison, this report defines one baseline method and one p
 \begin{table}[htbp]
 \caption{Baseline and Proposed Method Definition}
 \begin{center}
-\begin{tabular}{|c|p{5.4cm}|}
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|c|L{5.35cm}|}
 \hline
 \textbf{Method} & \textbf{Definition and Purpose} \\
 \hline
@@ -198,7 +207,10 @@ The implementation used SAM ViT-B as the segmentation backbone, YOLOv8n as the p
 \begin{table}[htbp]
 \caption{Experimental Versions}
 \begin{center}
-\begin{tabular}{|c|p{5.7cm}|c|}
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|c|L{5.35cm}|c|}
 \hline
 \textbf{Version} & \textbf{Modules} & \textbf{Runs} \\
 \hline
@@ -295,7 +307,10 @@ The current experiment intentionally does not report IoU or Dice score because n
 \begin{table}[htbp]
 \caption{Metric Status and Evidence Level}
 \begin{center}
-\begin{tabular}{|c|c|p{3.2cm}|}
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|L{1.7cm}|L{1.55cm}|L{3.35cm}|}
 \hline
 \textbf{Metric} & \textbf{Status} & \textbf{Reason} \\
 \hline
@@ -315,7 +330,10 @@ Fig.~\ref{fig:limitation} shows that failure cases can still occur when the subj
 \begin{table}[htbp]
 \caption{Observed Failure Modes and Likely Causes}
 \begin{center}
-\begin{tabular}{|p{2.2cm}|p{4.6cm}|}
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|L{2.05cm}|L{4.65cm}|}
 \hline
 \textbf{Failure mode} & \textbf{Likely cause} \\
 \hline
