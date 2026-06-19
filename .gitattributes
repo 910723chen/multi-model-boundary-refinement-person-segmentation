@@ -6,3 +6,4 @@
 *.pth binary
 *.pt binary
 *.onnx binary
+paper/generate_current_paper_preview.mjs linguist-generated=true
