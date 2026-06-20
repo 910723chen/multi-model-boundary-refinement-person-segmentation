@@ -117,17 +117,3 @@ Link: https://www.cs.princeton.edu/courses/archive/fall13/cos429/papers/Canny86.
 This is not a paper, but it is useful for explaining the actual YOLOv8 model files used in the project. The documentation confirms YOLOv8 support for detection models such as `yolov8n.pt` and segmentation models such as `yolov8n-seg.pt`.
 
 Link: https://docs.ultralytics.com/models/yolov8/
-
-## Recommended Paper Framing
-
-The safest academic framing is:
-
-> This project does not propose a new neural network architecture. Instead, it studies a practical multi-model pipeline that combines YOLO-based localization, SAM-based promptable segmentation, Canny edge-based boundary checking, and GrabCut-based foreground refinement for person boundary segmentation.
-
-Recommended claim level:
-
-> In the selected 12-image preliminary test set, YOLO-guided SAM with edge refinement and GrabCut achieved the highest mean edge alignment score among the tested versions.
-
-Avoid overclaiming:
-
-> Do not claim that this method is universally better than SAM, YOLO-Seg, or supervised segmentation models. The current experiment does not include ground-truth masks, IoU, or Dice scores yet.

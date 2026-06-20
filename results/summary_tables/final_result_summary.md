@@ -17,7 +17,3 @@
 ## Interpretation
 
 The final selected test set supports a refined conclusion: YOLO-guided SAM becomes most stable when edge refinement and GrabCut are included. Direct YOLO-Seg output is weaker, but GrabCut improves it substantially.
-
-## Limitations
-
-Edge alignment is a proxy metric. For a stronger final paper, add several ground-truth masks and report IoU/Dice.

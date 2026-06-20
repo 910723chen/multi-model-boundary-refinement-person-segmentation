@@ -5,7 +5,6 @@
 *.csv text eol=lf
 *.bib text eol=lf
 *.txt text eol=lf
-*.mjs text eol=lf
 *.pdf binary
 *.pptx binary
 *.png binary
@@ -14,4 +13,3 @@
 *.pth binary
 *.pt binary
 *.onnx binary
-paper/generate_current_paper_preview.mjs linguist-generated=true

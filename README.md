@@ -33,7 +33,6 @@ This result should be interpreted as a preliminary boundary-alignment improvemen
 ```text
 repository root/
   README.md
-  DATASET_NOTICE.md
   LICENSE
   release_manifest.csv
   requirements.txt
@@ -42,7 +41,6 @@ repository root/
     PROJECT_WORKFLOW.md
     EVALUATION_NOTES.md
     REPRODUCIBILITY.md
-    PROFESSOR_REVIEW.md
   src/
     sam_boundary_refinement.py
     run_experiment_versions.py
@@ -58,15 +56,11 @@ repository root/
     visual_assets/
   paper/
     Final_Project_Paper.pdf
-    Current_Paper_Preview.pdf
     IEEE_Final_Project_Paper.tex
-    generate_current_paper_preview.mjs
     figures/
     paper_used_images/
   presentation/
-    Final_Project_Presentation_FIXED_IMAGES.pptx
-    Final_Project_Presentation_ROUGH_FIXED_IMAGES.pptx
-    previews/
+    人工智慧應用presentation.pdf
   references/
 ```
 
@@ -86,12 +80,6 @@ For exact reproduction steps and expected generated files, see:
 
 ```text
 docs/REPRODUCIBILITY.md
-```
-
-For a strict professor-style repository review and current score estimate, see:
-
-```text
-docs/PROFESSOR_REVIEW.md
 ```
 
 ## Model Weights
@@ -193,12 +181,12 @@ A directly viewable final paper PDF is located at:
 paper/Final_Project_Paper.pdf
 ```
 
-The final submitted PDF is treated as the canonical final paper artifact. The editable IEEE source is still kept in `paper/IEEE_Final_Project_Paper.tex`; to regenerate the PDF, compile that file with the files in `paper/figures/`, for example by using Overleaf or a local LaTeX installation. `paper/Current_Paper_Preview.pdf` is kept as a duplicate quick-view copy for compatibility with earlier repository documentation.
+The final submitted PDF is treated as the canonical final paper artifact. The editable IEEE source is kept in `paper/IEEE_Final_Project_Paper.tex`; to regenerate the PDF, compile that file with the files in `paper/figures/`, for example by using Overleaf or a local LaTeX installation.
 
-The presentation files are located in:
+The presentation PDF is located at:
 
 ```text
-presentation/
+presentation/人工智慧應用presentation.pdf
 ```
 
 ## Limitations
@@ -218,13 +206,7 @@ references/supporting_papers_summary.md
 references/references.bib
 ```
 
-## Dataset and License Notes
-
-The included test images are course demonstration data, not a public benchmark dataset. See:
-
-```text
-DATASET_NOTICE.md
-```
+## License Notes
 
 Repository usage terms are described in:
 
