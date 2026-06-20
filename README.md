@@ -33,7 +33,6 @@ This result should be interpreted as a preliminary boundary-alignment improvemen
 ```text
 repository root/
   README.md
-  LICENSE
   requirements.txt
   .gitignore
   docs/
@@ -203,14 +202,6 @@ Core references are listed in:
 ```text
 references/supporting_papers_summary.md
 references/references.bib
-```
-
-## License Notes
-
-Repository usage terms are described in:
-
-```text
-LICENSE
 ```
 
 ## Future Work
