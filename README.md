@@ -34,7 +34,6 @@ This result should be interpreted as a preliminary boundary-alignment improvemen
 repository root/
   README.md
   LICENSE
-  release_manifest.csv
   requirements.txt
   .gitignore
   docs/
